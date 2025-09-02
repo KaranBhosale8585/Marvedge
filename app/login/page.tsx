@@ -27,15 +27,12 @@ export default function Login() {
 
     setLoading(true);
     try {
-      const res = await fetch("/api/auth/signup", {
+      const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
         cache: "no-store",
       });
-
-      const data = await res.json();
-      console.log(data);
 
       if (res.ok) {
         setForm({ email: "", password: "" });
@@ -55,7 +52,7 @@ export default function Login() {
       <Header />
       <div className="min-h-screen flex items-center justify-center bg-white text-black px-4">
         <div className="w-full max-w-md border border-gray-200 rounded-xl shadow-sm p-6 sm:p-8">
-          <h2 className="text-2xl font-semibold text-center mb-6">Signup</h2>
+          <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -114,17 +111,17 @@ export default function Login() {
               className="w-full py-2 px-4 bg-black text-white rounded-md hover:bg-gray-900 transition disabled:opacity-50"
               disabled={loading}
             >
-              {loading ? "Signing in..." : "Signup"}
+              {loading ? "Logging in..." : "Login"}
             </button>
           </form>
 
           <div className="text-sm text-center mt-6 text-gray-700">
-            Have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link
-              href="/login"
+              href="/signup"
               className="underline hover:text-black transition"
             >
-              Login
+              Register
             </Link>
           </div>
         </div>
