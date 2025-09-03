@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 import Header from "@/components/Header";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -34,11 +35,18 @@ export default function Login() {
         cache: "no-store",
       });
 
+      const data = await res.json();
+      console.log(data);
+
       if (res.ok) {
         setForm({ email: "", password: "" });
+        toast.success(data.message || "Logged in successfully!");
         setTimeout(() => {
           router.replace("/");
         }, 100);
+      } else {
+        toast.error(data.error || "Login failed");
+        setErrors({ email: true, password: true });
       }
     } catch {
       throw errors;
