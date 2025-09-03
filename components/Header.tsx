@@ -28,7 +28,7 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link
-          href="/"
+          href="/dashboard"
           className="text-2xl font-bold text-black hover:text-gray-700 transition"
         >
           RK
@@ -36,6 +36,12 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-black">
+          <Link
+            href="/tour/editor"
+            className="text-2xl font-bold text-black hover:text-gray-700 transition"
+          >
+            Tours
+          </Link>
           <button
             onClick={handleLogout}
             className="flex items-center gap-1 px-3 py-1.5 rounded-md text-gray-800 hover:text-black hover:bg-gray-100 transition"

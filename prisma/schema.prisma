@@ -23,11 +23,25 @@ model User {
 }
 
 model Tour {
-  id        String   @id @default(uuid())
+  id        String      @id @default(uuid())
   title     String
-  steps     Json     // Store steps as JSON (image, text, etc.)
-  isPublic  Boolean  @default(false)
+  steps     TourStep[]
+  isPublic  Boolean     @default(false)
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
+  user      User        @relation(fields: [userId], references: [id])
+  createdAt DateTime    @default(now())
+}
+
+model TourStep {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  mediaUrl    String?   // Image or Video URL
+  order       Int       // Position in sequence
+  tags        String[]  // Tags or categories
+  duration    Int?      // Estimated duration in seconds or minutes
+  interactive Json?     // Store interactive elements (clicks, forms, etc.)
+  tourId      String
+  tour        Tour      @relation(fields: [tourId], references: [id])
+  createdAt   DateTime  @default(now())
 }
