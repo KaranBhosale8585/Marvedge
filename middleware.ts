@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { verifyToken } from "./utils/auth";
 
-const authRequiredPaths = ["/", "/report"];
+const authRequiredPaths = ["/report"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -10,8 +10,11 @@ export async function middleware(request: NextRequest) {
 
   const user = token ? await verifyToken(token) : null;
 
-  if (user && (pathname === "/login" || pathname === "/register")) {
-    return NextResponse.redirect(new URL("/", request.url));
+  if (
+    user &&
+    (pathname === "/login" || pathname === "/signup" || pathname === "/")
+  ) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   if (!user && authRequiredPaths.includes(pathname)) {
@@ -22,5 +25,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/report", "/report/:path*", "/login", "/register"],
+  matcher: ["/", "/report", "/report/:path*", "/login", "/signup"],
 };
