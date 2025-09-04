@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
-import Header from "@/components/Header";
 import toast from "react-hot-toast";
 
 export default function Login() {
@@ -57,7 +56,29 @@ export default function Login() {
 
   return (
     <>
-      <Header />
+      <header className="w-full bg-white shadow-sm py-4 px-6 flex justify-between items-center sticky top-0 z-50">
+        <Link
+          href="/"
+          className="text-xl font-bold text-black hover:text-gray-800"
+        >
+          Marvedge
+        </Link>
+
+        <nav className="space-x-4">
+          <Link
+            href="/"
+            className="text-sm font-medium text-gray-700 hover:text-black transition"
+          >
+            Home
+          </Link>
+          <Link
+            href="/signup"
+            className="text-sm font-medium text-black bg-gray-100 px-3 py-1 rounded-md hover:bg-gray-200 transition"
+          >
+            Sign Up
+          </Link>
+        </nav>
+      </header>
       <div className="min-h-screen flex items-center justify-center bg-white text-black px-4">
         <div className="w-full max-w-md border border-gray-200 rounded-xl shadow-sm p-6 sm:p-8">
           <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>

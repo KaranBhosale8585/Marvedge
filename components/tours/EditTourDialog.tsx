@@ -12,32 +12,32 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 
-interface Tour {
-  id: string;
-  title: string;
-  status: "Public" | "Private";
-  thumbnail?: string;
-  description?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  views?: number;
-  stepsCount?: number;
-  steps?: Step[];
-  user?: { id: string; email: string };
-}
-
 interface Step {
   id: string;
   title: string;
   description: string;
+  mediaUrl?: string;
+  order: number;
+  tags?: string[];
+  duration?: number;
+}
+
+interface Tour {
+  id: string;
+  title: string;
+  isPublic: boolean;
+  status: "Public" | "Private";
+  userId: string;
+  steps?: Step[];
 }
 
 interface EditTourDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   tour: Tour | null;
-  onSave: (updatedTour: Tour) => void;
+  onSave: (updatedTour: Tour) => Promise<void>;
 }
+
 const EditTourDialog = ({
   open,
   onOpenChange,
@@ -52,19 +52,31 @@ const EditTourDialog = ({
 
   if (!editTour) return null;
 
-  const handleSave = () => {
-    onSave(editTour);
+  const handleStepChange = (idx: number, field: keyof Step, value: any) => {
+    if (!editTour.steps) return;
+    const updatedSteps = [...editTour.steps];
+    updatedSteps[idx] = { ...updatedSteps[idx], [field]: value };
+    setEditTour({ ...editTour, steps: updatedSteps });
+  };
+
+  const handleSave = async () => {
+    if (!editTour) return;
+    editTour.steps?.forEach((step) => {
+      if (!step.tags) step.tags = [];
+    });
+    await onSave(editTour);
     onOpenChange(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-4xl w-full sm:w-[90%]">
         <DialogHeader>
           <DialogTitle>Edit Tour</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
+          {/* Tour Title */}
           <Input
             value={editTour.title}
             onChange={(e) =>
@@ -73,32 +85,98 @@ const EditTourDialog = ({
             placeholder="Tour Title"
           />
 
-          <ScrollArea className="h-64 border rounded p-2">
+          {/* Public / Private Toggle */}
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={editTour.isPublic}
+              onChange={(e) =>
+                setEditTour({
+                  ...editTour,
+                  isPublic: e.target.checked,
+                  status: e.target.checked ? "Public" : "Private",
+                })
+              }
+            />
+            <span>{editTour.isPublic ? "Public" : "Private"}</span>
+          </label>
+
+          {/* Steps Editor */}
+          <ScrollArea className="h-80 border rounded p-2">
             {editTour.steps?.map((step, idx) => (
-              <div key={step.id} className="space-y-2 mb-3">
+              <div
+                key={step.id}
+                className="space-y-2 mb-4 border-b pb-3 last:border-b-0"
+              >
                 <Input
                   value={step.title}
-                  onChange={(e) => {
-                    const updatedSteps = [...(editTour.steps || [])];
-                    updatedSteps[idx].title = e.target.value;
-                    setEditTour({ ...editTour, steps: updatedSteps });
-                  }}
+                  onChange={(e) =>
+                    handleStepChange(idx, "title", e.target.value)
+                  }
                   placeholder={`Step ${idx + 1} Title`}
                 />
                 <Textarea
                   value={step.description}
-                  onChange={(e) => {
-                    const updatedSteps = [...(editTour.steps || [])];
-                    updatedSteps[idx].description = e.target.value;
-                    setEditTour({ ...editTour, steps: updatedSteps });
-                  }}
+                  onChange={(e) =>
+                    handleStepChange(idx, "description", e.target.value)
+                  }
                   placeholder="Step description"
                 />
+                {step.mediaUrl && (
+                  <img
+                    src={step.mediaUrl}
+                    alt={step.title}
+                    className="h-24 w-36 object-cover rounded mb-1"
+                  />
+                )}
+                <Input
+                  value={step.mediaUrl || ""}
+                  onChange={(e) =>
+                    handleStepChange(idx, "mediaUrl", e.target.value)
+                  }
+                  placeholder="Media URL"
+                />
+                <div className="flex gap-2 flex-wrap">
+                  <Input
+                    value={step.order}
+                    type="number"
+                    onChange={(e) =>
+                      handleStepChange(idx, "order", Number(e.target.value))
+                    }
+                    placeholder="Order"
+                    className="w-24"
+                  />
+                  <Input
+                    value={(step.tags || []).join(", ")}
+                    onChange={(e) =>
+                      handleStepChange(
+                        idx,
+                        "tags",
+                        e.target.value.split(",").map((t) => t.trim())
+                      )
+                    }
+                    placeholder="Tags (comma separated)"
+                    className="flex-1 min-w-[120px]"
+                  />
+                  <Input
+                    value={step.duration || ""}
+                    type="number"
+                    onChange={(e) =>
+                      handleStepChange(
+                        idx,
+                        "duration",
+                        e.target.value ? Number(e.target.value) : 0
+                      )
+                    }
+                    placeholder="Duration (min)"
+                    className="w-28"
+                  />
+                </div>
               </div>
             ))}
           </ScrollArea>
 
-          <Button onClick={handleSave} className="w-full">
+          <Button onClick={handleSave} className="w-full mt-2">
             Save Changes
           </Button>
         </div>

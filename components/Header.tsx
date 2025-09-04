@@ -22,7 +22,7 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       await fetch("/api/auth/logout", { method: "POST" });
-      router.push("/login");
+      router.push("/");
       toast.success("Logout successful");
     } catch (error) {
       console.error("Logout failed", error);
@@ -31,24 +31,31 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b shadow-sm">
+    <header className="sticky top-0 z-50 border-b bg-white/70 backdrop-blur-md shadow-sm">
       <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link
           href="/dashboard"
-          className="text-2xl font-bold tracking-tight text-gray-900 hover:text-gray-700"
+          className="text-2xl font-extrabold tracking-tight text-gray-900 hover:text-gray-700 transition hover:scale-105"
         >
-          RK
+          Marvedge
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link
-            href="/tour/editor"
-            className="text-sm font-medium text-gray-700 hover:text-black transition"
+          <Button
+            variant="ghost"
+            size="sm"
+            className="flex items-center gap-1 text-gray-700 hover:text-black"
           >
-            Tours
-          </Link>
+            <Link
+              href="/create-tour"
+              className="text-sm font-medium text-gray-700 hover:text-black transition-colors"
+            >
+              Tours
+            </Link>
+          </Button>
+
           <Button
             onClick={handleLogout}
             variant="ghost"
@@ -70,28 +77,30 @@ const Header = () => {
             </SheetTrigger>
             <SheetContent side="right" className="w-64">
               <SheetHeader>
-                <SheetTitle className="text-lg font-bold">Menu</SheetTitle>
+                <SheetTitle className="text-lg font-semibold">Menu</SheetTitle>
               </SheetHeader>
               <div className="mt-6 flex flex-col gap-4">
                 <Link
-                  href="/tour/editor"
+                  href="/create-tour"
                   onClick={() => setOpen(false)}
-                  className="text-sm font-medium text-gray-700 hover:text-black transition"
+                  className="text-sm font-medium text-gray-700 hover:text-black transition-colors"
                 >
                   Tours
                 </Link>
-                <Button
-                  onClick={() => {
-                    setOpen(false);
-                    handleLogout();
-                  }}
-                  variant="ghost"
-                  size="sm"
-                  className="flex items-center gap-2 text-gray-700 hover:text-black"
-                >
-                  <LogOut size={16} />
-                  Logout
-                </Button>
+                <div className="border-t pt-4">
+                  <Button
+                    onClick={() => {
+                      setOpen(false);
+                      handleLogout();
+                    }}
+                    variant="ghost"
+                    size="sm"
+                    className="flex items-center gap-2 text-gray-700 hover:text-black"
+                  >
+                    <LogOut size={16} />
+                    Logout
+                  </Button>
+                </div>
               </div>
             </SheetContent>
           </Sheet>
