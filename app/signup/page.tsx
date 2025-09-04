@@ -35,13 +35,12 @@ export default function Login() {
       });
 
       const data = await res.json();
-      console.log(data);
 
       if (res.ok) {
         setForm({ email: "", password: "" });
         toast.success(data.message || "Signed up successfully!");
         setTimeout(() => {
-          router.replace("/");
+          router.replace("/login");
         }, 100);
       } else {
         toast.error(data.error || "Signup failed");
