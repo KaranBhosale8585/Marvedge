@@ -2,19 +2,26 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import { Menu, X, LogOut } from "lucide-react";
-import toast from "react-hot-toast";
+import { useState } from "react";
+import { Menu, LogOut } from "lucide-react";
+import { toast } from "react-hot-toast";
+
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const [open, setOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
-      await fetch("/api/auth/logout", {
-        method: "POST",
-      });
+      await fetch("/api/auth/logout", { method: "POST" });
       router.push("/login");
       toast.success("Logout successful");
     } catch (error) {
@@ -25,58 +32,71 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link
           href="/dashboard"
-          className="text-2xl font-bold text-black hover:text-gray-700 transition"
+          className="text-2xl font-bold tracking-tight text-gray-900 hover:text-gray-700"
         >
           RK
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-black">
+        <nav className="hidden md:flex items-center gap-6">
           <Link
             href="/tour/editor"
-            className="text-2xl font-bold text-black hover:text-gray-700 transition"
+            className="text-sm font-medium text-gray-700 hover:text-black transition"
           >
             Tours
           </Link>
-          <button
+          <Button
             onClick={handleLogout}
-            className="flex items-center gap-1 px-3 py-1.5 rounded-md text-gray-800 hover:text-black hover:bg-gray-100 transition"
+            variant="ghost"
+            size="sm"
+            className="flex items-center gap-1 text-gray-700 hover:text-black"
           >
             <LogOut size={16} />
             Logout
-          </button>
+          </Button>
         </nav>
 
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden text-black"
-          onClick={() => setIsOpen((prev) => !prev)}
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
-      {/* Mobile Navigation */}
-      {isOpen && (
-        <div className="md:hidden px-4 pb-4 space-y-2 text-sm font-medium text-black">
-          <button
-            onClick={() => {
-              setIsOpen(false);
-              handleLogout();
-            }}
-            className="block w-full px-3 py-2 rounded-md text-left hover:bg-gray-100 hover:text-black transition"
-          >
-            <div className="flex items-center gap-2">
-              <LogOut size={16} />
-              Logout
-            </div>
-          </button>
+        {/* Mobile Menu */}
+        <div className="md:hidden">
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-64">
+              <SheetHeader>
+                <SheetTitle className="text-lg font-bold">Menu</SheetTitle>
+              </SheetHeader>
+              <div className="mt-6 flex flex-col gap-4">
+                <Link
+                  href="/tour/editor"
+                  onClick={() => setOpen(false)}
+                  className="text-sm font-medium text-gray-700 hover:text-black transition"
+                >
+                  Tours
+                </Link>
+                <Button
+                  onClick={() => {
+                    setOpen(false);
+                    handleLogout();
+                  }}
+                  variant="ghost"
+                  size="sm"
+                  className="flex items-center gap-2 text-gray-700 hover:text-black"
+                >
+                  <LogOut size={16} />
+                  Logout
+                </Button>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
-      )}
+      </div>
     </header>
   );
 };

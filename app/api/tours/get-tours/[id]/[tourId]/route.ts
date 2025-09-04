@@ -3,12 +3,17 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string; tourId: string }> }
 ) {
   try {
-    const tour = await prisma.tour.findMany({
-      where: { userId: params.id },
-      include: { steps: true, user: { select: { id: true, email: true } } },
+    const { id: userId, tourId } = await context.params;
+
+    const tour = await prisma.tour.findUnique({
+      where: { id: tourId, userId },
+      include: {
+        steps: true,
+        user: { select: { id: true, email: true } },
+      },
     });
 
     if (!tour) {
@@ -17,7 +22,7 @@ export async function GET(
 
     return NextResponse.json(tour, { status: 200 });
   } catch (err) {
-    console.error("Fetch tour error:", err);
+    console.error("Fetch single tour error:", err);
     return NextResponse.json(
       { error: "Failed to fetch tour" },
       { status: 500 }
