@@ -2,9 +2,6 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/utils/getCurrentUser";
 import { NextResponse } from "next/server";
 
-
-export const runtime = "nodejs";
-
 export async function GET() {
   const user = await getCurrentUser();
   if (!user) {
@@ -15,7 +12,7 @@ export async function GET() {
     const tours = await prisma.tour.findMany({
       where: { userId: user.id },
       include: {
-        steps: true, // Include tour steps if needed
+        steps: true,
       },
       orderBy: { createdAt: "desc" },
     });
