@@ -20,10 +20,10 @@ export async function DELETE(
       { message: "Tour deleted successfully", deletedTour },
       { status: 200 }
     );
-  } catch (err: any) {
+  } catch (err) {
     console.error("Delete tour error:", err);
     return NextResponse.json(
-      { error: err.message || "Failed to delete tour" },
+      { error: (err instanceof Error ? err.message : "Failed to delete tour") },
       { status: 500 }
     );
   }

@@ -1,6 +1,19 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
+interface Step {
+  id: number;
+  title: string;
+  description: string;
+  mediaUrl?: string | null;
+  order?: number;
+  tags?: string[];
+  duration?: number | null;
+  interactive?: Record<string, unknown>;
+  tourId?: string;
+  createdAt?: string;
+}
+
 export async function PUT(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
@@ -16,7 +29,7 @@ export async function PUT(
         isPublic,
         steps: {
           deleteMany: {},
-          create: steps?.map((step: any, index: number) => ({
+          create: steps?.map((step: Step, index: number) => ({
             title: step.title,
             description: step.description,
             mediaUrl: step.mediaUrl,

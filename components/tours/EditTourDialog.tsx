@@ -52,7 +52,7 @@ const EditTourDialog = ({
 
   if (!editTour) return null;
 
-  const handleStepChange = (idx: number, field: keyof Step, value: any) => {
+  const handleStepChange = (idx: number, field: keyof Step, value: unknown) => {
     if (!editTour.steps) return;
     const updatedSteps = [...editTour.steps];
     updatedSteps[idx] = { ...updatedSteps[idx], [field]: value };

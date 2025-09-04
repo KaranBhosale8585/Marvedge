@@ -9,7 +9,7 @@ interface Step {
   order?: number;
   tags?: string[];
   duration?: number | null;
-  interactive?: Record<string, any>;
+  interactive?: Record<string, unknown>;
   tourId?: string;
   createdAt?: string;
 }

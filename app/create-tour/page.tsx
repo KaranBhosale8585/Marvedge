@@ -37,7 +37,7 @@ interface Step {
   order?: number;
   tags?: string[];
   duration?: number | null;
-  interactive?: Record<string, any>;
+  interactive?: Record<string, unknown>;
   tourId?: string;
   createdAt?: string;
 }
@@ -87,8 +87,7 @@ const ProductTourEditor = () => {
     setActiveStep(newStep.id);
   };
 
-  // Fixed updateStep typing to accept any Step field type
-  const updateStep = (id: number, field: keyof Step, value: any) => {
+  const updateStep = (id: number, field: keyof Step, value: unknown) => {
     setSteps((prev) =>
       prev.map((s) => (s.id === id ? { ...s, [field]: value } : s))
     );
@@ -123,8 +122,12 @@ const ProductTourEditor = () => {
       });
       if (!res.ok) throw new Error("Failed to save tour");
       toast.success("Tour saved successfully!");
-    } catch (err: any) {
-      toast.error(err.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message);
+      } else {
+        toast.error("An unknown error occurred");
+      }
     } finally {
       setLoading(false);
     }
