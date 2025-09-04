@@ -11,6 +11,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 interface Step {
   id: string;
@@ -123,7 +124,7 @@ const EditTourDialog = ({
                   placeholder="Step description"
                 />
                 {step.mediaUrl && (
-                  <img
+                  <Image
                     src={step.mediaUrl}
                     alt={step.title}
                     className="h-24 w-36 object-cover rounded mb-1"

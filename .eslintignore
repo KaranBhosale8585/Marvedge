@@ -1,0 +1,17 @@
+# Prisma generated client
+/app/generated/prisma/**
+
+# Next.js build folders
+.next
+out
+dist
+
+# Node modules
+node_modules
+
+# Logs
+*.log
+
+# Environment files
+.env*
+!.env.example

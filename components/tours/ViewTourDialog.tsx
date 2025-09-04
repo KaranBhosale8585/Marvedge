@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import Image from "next/image";
 
 interface Step {
   id: string;
@@ -116,7 +117,7 @@ const ViewTourDialog = ({ open, onOpenChange, tour }: ViewTourDialogProps) => {
                       {step.mediaUrl && (
                         <div>
                           <strong className="text-gray-700">Media:</strong>
-                          <img
+                          <Image
                             src={step.mediaUrl}
                             alt={`Step ${idx + 1} image`}
                             className="rounded-xl w-full max-h-96 object-cover border border-gray-200 mt-2"
