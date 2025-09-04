@@ -356,12 +356,10 @@ const ProductTourEditor = () => {
                       </span>
                     )}
                   </div>
-                  <UploadButton<OurFileRouter, "imageUploader">
+                  <UploadButton<OurFileRouter,"imageUploader">
                     endpoint="imageUploader"
                     onClientUploadComplete={handleUpload}
-                    onUploadError={(err) =>
-                      toast.error(`Upload failed: ${err.message}`)
-                    }
+                    onUploadError={(err) => {toast.error(`Upload failed: ${err.message}`);}}
                     appearance={{
                       button:
                         "flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 shadow-md transition text-sm sm:text-base",
