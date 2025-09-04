@@ -356,7 +356,7 @@ const ProductTourEditor = () => {
                       </span>
                     )}
                   </div>
-                  <UploadButton<OurFileRouter>
+                  <UploadButton<OurFileRouter, "imageUploader">
                     endpoint="imageUploader"
                     onClientUploadComplete={handleUpload}
                     onUploadError={(err) =>
