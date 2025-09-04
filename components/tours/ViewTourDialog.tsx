@@ -117,11 +117,14 @@ const ViewTourDialog = ({ open, onOpenChange, tour }: ViewTourDialogProps) => {
                       {step.mediaUrl && (
                         <div>
                           <strong className="text-gray-700">Media:</strong>
-                          <Image
-                            src={step.mediaUrl}
-                            alt={`Step ${idx + 1} image`}
-                            className="rounded-xl w-full max-h-96 object-cover border border-gray-200 mt-2"
-                          />
+                          <div className="relative w-full max-h-96 mt-2 rounded-xl border border-gray-200 overflow-hidden">
+                            <Image
+                              src={step.mediaUrl}
+                              alt={`Step ${idx + 1} image`}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
                         </div>
                       )}
                     </div>

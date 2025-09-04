@@ -124,11 +124,14 @@ const EditTourDialog = ({
                   placeholder="Step description"
                 />
                 {step.mediaUrl && (
-                  <Image
-                    src={step.mediaUrl}
-                    alt={step.title}
-                    className="h-24 w-36 object-cover rounded mb-1"
-                  />
+                  <div className="relative h-24 w-36 mb-1 rounded overflow-hidden">
+                    <Image
+                      src={step.mediaUrl}
+                      alt={step.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
                 )}
                 <Input
                   value={step.mediaUrl || ""}
