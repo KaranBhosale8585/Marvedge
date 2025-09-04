@@ -3,9 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const params = await context.params;
     const { title, isPublic, steps } = await req.json();
 
     const updatedTour = await prisma.tour.update({
