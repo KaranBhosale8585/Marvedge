@@ -2,6 +2,9 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/utils/getCurrentUser";
 import { NextResponse } from "next/server";
 
+
+export const runtime = "nodejs";
+
 export async function GET() {
   const user = await getCurrentUser();
   if (!user) {
