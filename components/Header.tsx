@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Menu, LogOut } from "lucide-react";
+import { Menu, LogOut, Monitor } from "lucide-react";
 import { toast } from "react-hot-toast";
 
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,16 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import ScreenRecorder from "./ScreenRecorder";
 
 const Header = () => {
   const router = useRouter();
@@ -43,18 +53,34 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="flex items-center gap-1 text-gray-700 hover:text-black"
+          <Link
+            href="/create-tour"
+            className="text-sm font-medium text-gray-700 hover:text-black transition-colors"
           >
-            <Link
-              href="/create-tour"
-              className="text-sm font-medium text-gray-700 hover:text-black transition-colors"
-            >
+            <Button variant="ghost" size="sm">
               Tours
-            </Link>
-          </Button>
+            </Button>
+          </Link>
+
+          {/* Screen Recorder Dialog */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex items-center gap-1 text-gray-700 hover:text-indigo-600"
+              >
+                <Monitor className="h-4 w-4" />
+                Screen Recorder
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-3xl">
+              <DialogHeader>
+                <DialogTitle>Screen Recorder</DialogTitle>
+              </DialogHeader>
+              <ScreenRecorder />
+            </DialogContent>
+          </Dialog>
 
           <Button
             onClick={handleLogout}
