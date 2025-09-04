@@ -3,11 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
+    const { id } = context.params;
+
     const tour = await prisma.tour.findMany({
-      where: { userId: params.id },
+      where: { userId: id },
       include: { steps: true, user: { select: { id: true, email: true } } },
     });
 
